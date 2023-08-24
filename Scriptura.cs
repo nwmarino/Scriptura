@@ -17,6 +17,33 @@ namespace Scriptura
         {
             InitializeComponent();
             menuStrip.Renderer = new SxRenderer(Color.FromArgb(30, 30, 30));
+            Saved = 1;
+            dirPath = "";
+        }
+
+        public int Saved
+        {
+            get { return _Saved; }
+            set
+            {
+                _Saved = value;
+                switch (_Saved)
+                {
+                    case 0:
+                        this.Text = "Scriptura (unsaved)";
+                        break;
+                    case 1:
+                        this.Text = "Scriptura";
+                        break;
+                }
+            }
+        }
+
+        private int _Saved;
+
+        private String dirPath
+        {
+            get; set;
         }
 
         private void Scriptura_Load(object sender, EventArgs e)
@@ -56,6 +83,43 @@ namespace Scriptura
             gitHubToolStripMenuItem.ForeColor = Color.White;
         }
 
+        // exports text to file and saves acc
+        private void exportTypeSave()
+        {
+            openFileDialog.DefaultExt = ".txt";
+            openFileDialog.FileName = "";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Pad.Text = File.ReadAllText(openFileDialog.FileName);
+                dirPath = Path.GetFullPath(openFileDialog.FileName);
+                Saved = 1;
+            }
+        }
+
+        // attempt at saving to existing file pathing, otherwise will assume non-existent
+        private void baseTypeSave()
+        {
+            if (!dirPath.Equals(""))
+            {
+                File.WriteAllText(dirPath, Pad.Text);
+                Saved = 1;
+            }
+            else
+            {
+                exportTypeSave();
+            }
+        }
+
+        private void saveWarn()
+        {
+            Save savePopup = new Save();
+            DialogResult result = savePopup.ShowDialog();
+            if (result == DialogResult.Yes)
+            {
+                baseTypeSave();
+            }
+        }
+
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -63,8 +127,12 @@ namespace Scriptura
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // verify saved
+            if (Saved == 0)
+            {
+                saveWarn();
+            }
             Pad.Clear();
+            Saved = 1;
         }
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -74,22 +142,25 @@ namespace Scriptura
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (Saved == 0)
+            {
+                saveWarn();
+            }
             Close();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog.DefaultExt = ".txt";
-            openFileDialog.FileName = "";
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (Saved == 0)
             {
-                Pad.Text = File.ReadAllText(openFileDialog.FileName);
+                saveWarn();
             }
+            exportTypeSave();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            baseTypeSave();
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,6 +171,7 @@ namespace Scriptura
             if (result == DialogResult.OK)
             {
                 File.WriteAllText(saveFileDialog.FileName, Pad.Text);
+                Saved = 1;
             }
         }
 
@@ -131,6 +203,11 @@ namespace Scriptura
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Pad.SelectAll();
+        }
+
+        private void Pad_TextChanged(object sender, EventArgs e)
+        {
+            Saved = 0;
         }
     }
 }

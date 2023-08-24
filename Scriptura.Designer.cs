@@ -400,6 +400,7 @@
             this.Pad.Size = new System.Drawing.Size(800, 396);
             this.Pad.TabIndex = 1;
             this.Pad.Text = "";
+            this.Pad.TextChanged += new System.EventHandler(this.Pad_TextChanged);
             // 
             // openFileDialog
             // 

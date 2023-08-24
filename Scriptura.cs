@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Linq;
+using System.Data;
+using System.Drawing;
+
 namespace Scriptura
 {
     public partial class Scriptura : Form
@@ -52,7 +63,8 @@ namespace Scriptura
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            // verify saved
+            Pad.Clear();
         }
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -63,6 +75,62 @@ namespace Scriptura
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog.DefaultExt = ".txt";
+            openFileDialog.FileName = "";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Pad.Text = File.ReadAllText(openFileDialog.FileName);
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.DefaultExt = ".txt";
+            saveFileDialog.Filter = "Generic Text File|*.txt|PDF File|*.pdf|Config File|*.json";
+            DialogResult result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, Pad.Text);
+            }
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pad.Undo();
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pad.Redo();
+        }
+
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pad.Cut();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pad.Copy();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pad.Paste();
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Pad.SelectAll();
         }
     }
 }

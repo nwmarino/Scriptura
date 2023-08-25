@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Scriptura
 {
@@ -27,10 +28,10 @@ namespace Scriptura
             set
             {
                 _Saved = value;
-                switch (_Saved)
+                switch (value)
                 {
                     case 0:
-                        this.Text = "Scriptura (unsaved)";
+                        this.Text = "Scriptura*";
                         break;
                     case 1:
                         this.Text = "Scriptura";
@@ -41,7 +42,7 @@ namespace Scriptura
 
         private int _Saved;
 
-        private String dirPath
+        private string dirPath
         {
             get; set;
         }
@@ -63,17 +64,11 @@ namespace Scriptura
             copyToolStripMenuItem.ForeColor = Color.White;
             pasteToolStripMenuItem.ForeColor = Color.White;
             selectAllToolStripMenuItem.ForeColor = Color.White;
-            bookmarksToolStripMenuItem.ForeColor = Color.White;
 
             toolsToolStripMenuItem.ForeColor = Color.White;
             fontToolStripMenuItem.ForeColor = Color.White;
             colorToolStripMenuItem.ForeColor = Color.White;
             linkToolStripMenuItem.ForeColor = Color.White;
-
-            projectToolStripMenuItem.ForeColor = Color.White;
-            buildToolStripMenuItem.ForeColor = Color.White;
-            synthesizeToolStripMenuItem.ForeColor = Color.White;
-            decryptToolStripMenuItem.ForeColor = Color.White;
 
             helpToolStripMenuItem.ForeColor = Color.White;
             gettingStartedToolStripMenuItem.ForeColor = Color.White;
@@ -83,8 +78,7 @@ namespace Scriptura
             gitHubToolStripMenuItem.ForeColor = Color.White;
         }
 
-        // exports text to file and saves acc
-        private void exportTypeSave()
+        private void openFile()
         {
             openFileDialog.DefaultExt = ".txt";
             openFileDialog.FileName = "";
@@ -96,7 +90,18 @@ namespace Scriptura
             }
         }
 
-        // attempt at saving to existing file pathing, otherwise will assume non-existent
+        private void exportTypeSave()
+        {
+            saveFileDialog.DefaultExt = ".txt";
+            saveFileDialog.Filter = "Generic Text File|*.txt|PDF File|*.pdf|Config File|*.json";
+            DialogResult result = saveFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, Pad.Text);
+                Saved = 1;
+            }
+        }
+
         private void baseTypeSave()
         {
             if (!dirPath.Equals(""))
@@ -110,7 +115,7 @@ namespace Scriptura
             }
         }
 
-        private void saveWarn()
+        private bool saveWarn()
         {
             Save savePopup = new Save();
             DialogResult result = savePopup.ShowDialog();
@@ -118,6 +123,11 @@ namespace Scriptura
             {
                 baseTypeSave();
             }
+            if (result == DialogResult.Cancel)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -129,7 +139,8 @@ namespace Scriptura
         {
             if (Saved == 0)
             {
-                saveWarn();
+                bool result = saveWarn();
+                if (!result) return;
             }
             Pad.Clear();
             Saved = 1;
@@ -144,7 +155,8 @@ namespace Scriptura
         {
             if (Saved == 0)
             {
-                saveWarn();
+                bool result = saveWarn();
+                if (!result) return;
             }
             Close();
         }
@@ -153,9 +165,10 @@ namespace Scriptura
         {
             if (Saved == 0)
             {
-                saveWarn();
+                bool result = saveWarn();
+                if (!result) return;
             }
-            exportTypeSave();
+            openFile();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -165,14 +178,7 @@ namespace Scriptura
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            saveFileDialog.DefaultExt = ".txt";
-            saveFileDialog.Filter = "Generic Text File|*.txt|PDF File|*.pdf|Config File|*.json";
-            DialogResult result = saveFileDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                File.WriteAllText(saveFileDialog.FileName, Pad.Text);
-                Saved = 1;
-            }
+            exportTypeSave();
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -208,6 +214,33 @@ namespace Scriptura
         private void Pad_TextChanged(object sender, EventArgs e)
         {
             Saved = 0;
+        }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            printDialog.ShowDialog();
+        }
+
+        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fontDialog.ShowDialog() == DialogResult.OK)
+                Pad.Font = fontDialog.Font;
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+                Pad.ForeColor = colorDialog.Color;
+        }
+
+        private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo githubLink = new ProcessStartInfo
+            {
+                FileName = "https://github.com/nickmxrino/Scriptura",
+                UseShellExecute = true
+            };
+            Process.Start(githubLink);
         }
     }
 }

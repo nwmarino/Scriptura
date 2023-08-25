@@ -39,7 +39,7 @@ namespace Scriptura
 
         private void popupCancelButton_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
 
         private void label1_Click(object sender, EventArgs e)

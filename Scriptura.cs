@@ -20,7 +20,7 @@ namespace Scriptura
             menuStrip.Renderer = new SxRenderer(Color.FromArgb(30, 30, 30));
             Saved = 1;
             dirPath = "";
-            this.FormClosing += ClosingVerify;
+            FormClosing += ClosingVerify;
         }
 
         public int Saved

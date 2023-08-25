@@ -92,11 +92,11 @@
             // popupText
             // 
             this.popupText.AutoSize = true;
-            this.popupText.Font = new System.Drawing.Font("Borda", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.popupText.Font = new System.Drawing.Font("Borda 8", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.popupText.ForeColor = System.Drawing.Color.White;
             this.popupText.Location = new System.Drawing.Point(86, 37);
             this.popupText.Name = "popupText";
-            this.popupText.Size = new System.Drawing.Size(248, 20);
+            this.popupText.Size = new System.Drawing.Size(250, 21);
             this.popupText.TabIndex = 4;
             this.popupText.Text = "Do you want to save your changes?";
             this.popupText.Click += new System.EventHandler(this.label1_Click);

@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using System.Linq;
-using System.Data;
-using System.Drawing;
 using System.Diagnostics;
 
 namespace Scriptura
@@ -44,9 +34,7 @@ namespace Scriptura
         private int _Saved;
 
         private string dirPath
-        {
-            get; set;
-        }
+        { get; set; }
 
         private void Scriptura_Load(object sender, EventArgs e)
         {
@@ -81,7 +69,7 @@ namespace Scriptura
         private void ClosingVerify(object sender, FormClosingEventArgs e)
         {
             bool result = true;
-            if (Saved == 0) 
+            if (Saved == 0)
                 result = saveWarn();
             if (!result) e.Cancel = true;
         }
@@ -232,13 +220,17 @@ namespace Scriptura
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (fontDialog.ShowDialog() == DialogResult.OK)
+            {
                 Pad.Font = fontDialog.Font;
+            }
         }
 
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
                 Pad.ForeColor = colorDialog.Color;
+            }
         }
 
         private void gitHubToolStripMenuItem_Click(object sender, EventArgs e)

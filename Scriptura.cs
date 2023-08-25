@@ -20,6 +20,7 @@ namespace Scriptura
             menuStrip.Renderer = new SxRenderer(Color.FromArgb(30, 30, 30));
             Saved = 1;
             dirPath = "";
+            this.FormClosing += ClosingVerify;
         }
 
         public int Saved
@@ -76,6 +77,14 @@ namespace Scriptura
             documentationToolStripMenuItem.ForeColor = Color.White;
             aboutScripturaToolStripMenuItem.ForeColor = Color.White;
             gitHubToolStripMenuItem.ForeColor = Color.White;
+        }
+
+        private void ClosingVerify(object sender, FormClosingEventArgs e)
+        {
+            bool result = true;
+            if (Saved == 0) 
+                result = saveWarn();
+            if (!result) e.Cancel = true;
         }
 
         private void openFile()

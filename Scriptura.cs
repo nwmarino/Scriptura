@@ -66,10 +66,9 @@ namespace Scriptura
             pasteToolStripMenuItem.ForeColor = Color.White;
             selectAllToolStripMenuItem.ForeColor = Color.White;
 
-            toolsToolStripMenuItem.ForeColor = Color.White;
+            formatToolStripMenuItem.ForeColor = Color.White;
             fontToolStripMenuItem.ForeColor = Color.White;
             colorToolStripMenuItem.ForeColor = Color.White;
-            linkToolStripMenuItem.ForeColor = Color.White;
 
             helpToolStripMenuItem.ForeColor = Color.White;
             gettingStartedToolStripMenuItem.ForeColor = Color.White;
